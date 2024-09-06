@@ -4,4 +4,4 @@ SSE - project - Online for art sale.
 Frontend: HTML, CSS.
 Backend : NodeJS, Express, EJS. 
 
-Student : Arni Ingi Johannesson
+Student : Arni Ingi Johannessonls
