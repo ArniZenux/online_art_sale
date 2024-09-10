@@ -1,13 +1,18 @@
 import express from 'express';
 import sqlite3 from 'sqlite3';
-import bodyParser from 'body-parser';
+import cors from 'cors';
+import bodyParse from 'body-parser';
 
 const dbFile = './onlineART.db';
-
-const app = express();
 const port = 3000;
 
-app.use(bodyParser.urlencoded({ extended: false }));
+const app = express();
+app.use(cors());
+
+app.use(bodyParse.json());
+app.use(bodyParse.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+
 app.set('view engine', 'ejs');
 
 let db = new sqlite3.Database('./onlineART.db', (err) => {
@@ -37,8 +42,22 @@ app.get('/about', (req, res) => {
   res.render('about');
 });
 
+/* 
+  User
+*/
+app.get('/user', (req, res) => {
+  res.render('user');
+});
+
+/* 
+  Admin
+*/
+app.get('/admin', (req, res) => {
+  res.render('admin');
+});
+
 /*
-  Edit - Content View
+  Edit - Admin View
 */
 app.get('/edit', (req, res ) => {
   const sql = 'SELECT * FROM tblArt';
@@ -50,33 +69,62 @@ app.get('/edit', (req, res ) => {
   });
 });
 
-/* User*/
-app.get('/user', (req, res) => {
-  res.render('user');
-});
-
-/* Admin */
-app.get('/admin', (req, res) => {
-  res.render('admin');
-});
-
 /*
-  Update, Add, Delete - page
+  Add - Admin View
 */
 app.get('/addArt', (req, res) => {
   res.render('addArt');
 });
 
-app.put('/add', (req, res) => {
-  res.render('add');
+app.post('/addNewArt', (req, res) => {
+  const {name, price, year, artist} = req.body; 
+  const width = 100;
+  const height = 100;  
+  const sql = 'INSERT INTO tblArt (name, price, year, height, width, artist) VALUES (?,?,?,?,?,?)';
+  console.log(name, price, year, artist); 
+  //res.redirect('/');
+  db.run(sql, [name, price, year, height, width, artist], (err) => {
+    if(err) {
+      return res.render('/'); 
+    }
+    res.redirect('/edit');
+  })
 });
 
-app.post('/editArt', (req, res) => {
-  res.send('Yes it change change ... online art sale');
+/*
+  Delete art - Admin View
+*/
+app.get('/deleteArt/:id', (req, res) => {
+  const { id } = req.params; 
+  const sql = 'DELETE FROM tblArt WHERE id = ?';
+  //console.log(id);
+  db.run(sql, id, (err) => {
+    if(err){
+      return console.error(err.message); 
+    }
+    console.log(`Art with ID ${id} deleted`);
+    res.redirect('/edit');
+  });
 });
 
-app.delete('/deleteArt', (req, res) => {
-  res.send('Bye bye User -- online art sale');
+/*
+  Update Art - Admin View 
+*/
+app.get('/update/:id', (req, res) => {
+  const { id } = req.params;
+  const sql = 'SELECT * FROM tblArt WHERE id = ?';
+
+  db.get(sql, [id], (err, rows) => {
+    if (err) {
+      return console.error(err.message);
+    }
+    if (rows) {
+      res.render('updateArt', { arts: rows }); // Pass current user data to the form
+      //console.log(rows);
+    } else {
+      res.status(404).send('Art Id not found');
+    }
+  });
 });
 
 app.listen(port, () => {

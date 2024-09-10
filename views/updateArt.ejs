@@ -11,9 +11,26 @@
 
 <main>
   <div class="jumbotron">
-    <h1>Add new art</h1>
+    <h1>Update art</h1>
   </div>
 
+  <div class="container"> 
+    <div class="row">
+      <div class="col-md-4">
+        <ul>
+          <li><strong><%= arts.id %></strong></li>
+          <li><strong><%= arts.name %></strong></li>
+          <li><strong><%= arts.price %></strong></li>
+          <li><strong><%= arts.year %></strong></li>
+          <li><strong><%= arts.artist %></strong></li>
+        </ul>
+        <p><a class="btn btn-secondary" href="#" role="button">Update</a></p>
+    </div>
+      <hr>
+    </div> 
+  </div>
+
+  <!-- 
   <div class="container"> 
     <form action="/addNewArt" method="POST">
       <div class="mb-3">
@@ -32,16 +49,10 @@
         <label for="artist" class="form-label">Artist</label>
         <input type="text" class="form-control" id="artist" name="artist">
       </div>
-      
-      <!--<div class="mb-3">
-        <label for="formFile" class="form-label">Image of art</label>
-        <input class="form-control" type="file" id="formFile">
-      </div>
-      -->
       <button class="btn btn-secondary" type="submit">Add</button>
     </form>
   </div>
-
+  -->
 </main>
 
 <footer>
