@@ -16,6 +16,7 @@
   </div>
 
   <div class="container"> 
+    <p><a class="btn btn-secondary" href="/addArt" role="button">Add new art</a></p>
     <div class="row">
       <% arts.forEach(art => { %>
 
@@ -27,7 +28,16 @@
           <li><strong><%= art.year %></strong></li>
           <li><strong><%= art.artist %></strong></li>
         </ul>
-        <p><a class="btn btn-secondary" href="#" role="button">Buy</a></p>
+        
+          <div class="row">
+            <div class="col-md-6">
+              <p><a class="btn btn-secondary" href="#" role="button">Update</a></p>
+            </div>
+            <div class="col-md-6">
+              <p><a class="btn btn-secondary" href="#" role="button">Delete</a></p>
+            </div>
+          </div>
+
     </div>
     <% }) %>
       <hr>
