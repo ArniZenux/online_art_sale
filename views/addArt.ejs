@@ -17,20 +17,27 @@
   <div class="container"> 
     <form action="/addNewArt" method="POST">
       <div class="mb-3">
-        <label for="name" class="form-label">Name of art</label>
-        <input type="text" class="form-control" id="name" name="name" >
+        <label for="courseID" class="form-label">Number of course</label>
       </div>
       <div class="mb-3">
-        <label for="price" class="form-label">Price</label>
+        <label for="courseID" class="form-label">Number of course</label>
+        <input type="text" class="form-control" id="courseID" name="courseID" >
+      </div>
+      <div class="mb-3">
+        <label for="title" class="form-label">Name of course</label>
+        <input type="text" class="form-control" id="title" name="title" >
+      </div>
+      <div class="mb-3">
+        <label for="start_dagur" class="form-label">Start</label>
+        <input type="text" class="form-control" id="start_dagur" name="start_dagur">
+      </div>
+      <div class="mb-3">
+        <label for="last_dagur" class="form-label">End</label>
+        <input type="text" class="form-control" id="last_dagur" name="last_dagur">
+      </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Teacher</label>
         <input type="text" class="form-control" id="price" name="price">
-      </div>
-      <div class="mb-3">
-        <label for="year" class="form-label">Year</label>
-        <input type="text" class="form-control" id="year" name="year">
-      </div>
-      <div class="mb-3">
-        <label for="artist" class="form-label">Artist</label>
-        <input type="text" class="form-control" id="artist" name="artist">
       </div>
       
       <!--<div class="mb-3">
@@ -41,7 +48,6 @@
       <button class="btn btn-secondary" type="submit">Add</button>
     </form>
   </div>
-
 </main>
 
 <footer>
