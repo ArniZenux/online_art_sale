@@ -3,8 +3,11 @@ import sqlite3 from 'sqlite3';
 import cors from 'cors';
 import bodyParse from 'body-parser';
 import { ad_safna_ollum_append } from './utils/utils.js';
+import * as fs from 'fs';
+import { start } from 'repl';
 
 const dbFile2 = './data/onlineSchool.db';
+const logData = './var/logToFile.json';
 const port = 3000;
 
 const app = express();
@@ -23,22 +26,30 @@ let db = new sqlite3.Database(dbFile2, (err) => {
   console.log('Connected to the SQLite database.');
 });
 
+function getUserName(){
+  const jsonData = {
+    name     :  'Anna Jona',
+    password :  '1234'
+  }
+  return jsonData; 
+}
+
 /*
   Index - Content View
 */
 app.get('/', (req, res) => {
+  const _jsonData = getUserName();
   const sql = `
-  SELECT  nafn, title, start_dagur, last_dagur, price
-  FROM    tblTeacher, tblTeach, tblCourse 
-  WHERE   tblTeacher.teacherID == tblTeach.z_idTeacher 
-  AND     tblTeach.z_idCourse == tblCourse.courseID;
+    SELECT  nafn, title, start_dagur, last_dagur, price
+    FROM    tblTeacher, tblTeach, tblCourse 
+    WHERE   tblTeacher.teacherID == tblTeach.z_idTeacher 
+    AND     tblTeach.z_idCourse == tblCourse.courseID;
   `;
-
   db.all(sql, [], (err, rows) => {
     if(err) {
       return console.error(err.message);
     }
-    res.render('index', { arts: rows });
+    res.render('index', { arts: rows, data: _jsonData });
   });
 });
 
@@ -46,7 +57,7 @@ app.get('/', (req, res) => {
   About - Content View
 */ 
 app.get('/about', (req, res) => {
-  ad_safna_ollum_append('about'); 
+  //ad_safna_ollum_append('about'); 
   res.render('about');
 });
 
@@ -54,7 +65,9 @@ app.get('/about', (req, res) => {
   User
 */
 app.get('/user', (req, res) => {
-  res.render('user');
+  const _jsonData = getUserName();
+  console.log(_jsonData.password); 
+  res.render('user', {arts: _jsonData});
 });
 
 /* 
@@ -62,15 +75,30 @@ app.get('/user', (req, res) => {
 */
 app.get('/admin', (req, res) => {
   res.render('admin');
+  /*fs.readFile(logData, 'utf8', (err, data) => {
+    if(err){
+      console.error(`Error reading Log File:`, err);
+      return res.status(500).send(`Error reading Log File`);
+    }
+    const jsonLogData = JSON.parse(data);
+    console.log(jsonLogData);
+
+    res.render('admin');
+  });*/
 });
 
 /*
   Edit - Admin View
 */
 app.get('/edit', (req, res ) => {
-  const sql_teacher = 'SELECT teacherID, nafn FROM tblTeacher;';
-  const sql = 'SELECT * FROM tblCourse;';
-
+  //const sql_teacher = `SELECT teacherID, nafn FROM tblTeacher;`;
+  //const sql = `SELECT * FROM tblCourse;`;
+  const sql = `
+    SELECT  tblCourse.id, nafn, title, start_dagur, last_dagur, price
+    FROM    tblTeacher, tblTeach, tblCourse 
+    WHERE   tblTeacher.teacherID == tblTeach.z_idTeacher 
+    AND     tblTeach.z_idCourse == tblCourse.courseID;
+  `; 
   db.all(sql, [], (err, rows) => {
     if(err) {
       return console.error(err.message);
@@ -94,21 +122,34 @@ app.get('/addArt', (req, res) => {
 
 
 app.post('/addNewArt', (req, res) => {
-  const {courseID, title, start_dagur, last_dagur, price} = req.body; 
+  const {courseID, title, price, start_dagur, last_dagur, idteacher} = req.body; 
   const sql_course = `
     INSERT INTO 
     tblCourse(courseID, title, start_dagur, last_dagur, price) 
-    VALUES(123, 'MATH 1', '10 september', '23 desember', '3000');
-    `;
+    VALUES(?,?,?,?,?);
+  `;
+
+  const sql_teach = `
+    INSERT INTO 
+    tblTeach(z_idTeacher, z_idCourse) 
+    VALUES(?,?); 
+  `;
+
   console.log(courseID, title, start_dagur, last_dagur, price); 
-  ad_safna_ollum_append('Add New Course'); 
-  //res.redirect('/');
+  console.log(courseID,idteacher); 
+
   db.run(sql_course, [courseID, title, start_dagur, last_dagur, price], (err) => {
     if(err) {
-      return res.render('/'); 
+      return console.error(err.message);  
     }
+    db.run(sql_teach, [idteacher, courseID], (err) => {
+      if(err) {
+        return console.error(err.message); 
+      }
+    });
+    ad_safna_ollum_append('Admin - Add New Course'); 
     res.redirect('/edit');
-  })
+  });
 });
 
 /*
@@ -116,13 +157,17 @@ app.post('/addNewArt', (req, res) => {
 */
 app.get('/deleteArt/:id', (req, res) => {
   const { id } = req.params; 
-  const sql = 'DELETE FROM tblArt WHERE id = ?';
-  //console.log(id);
-  db.run(sql, id, (err) => {
+  const sql_course = `
+    DELETE FROM tblCourse 
+    WHERE tblCourse.id = ?
+  `;
+  //const sql_teach = 'DELETE FROM tblTeach WHERE tblTeach.z_idCourse = ?';
+  db.run(sql_course, id, (err) => {
     if(err){
       return console.error(err.message); 
     }
-    console.log(`Art with ID ${id} deleted`);
+    console.log(`Course with ID ${id} deleted`);
+    ad_safna_ollum_append(`Delete Course ${id}`); 
     res.redirect('/edit');
   });
 });
@@ -132,18 +177,52 @@ app.get('/deleteArt/:id', (req, res) => {
 */
 app.get('/update/:id', (req, res) => {
   const { id } = req.params;
-  const sql = 'SELECT * FROM tblArt WHERE id = ?';
-
+  //const sql = 'SELECT * FROM tblCourse WHERE id = ?';
+  const sql = `
+    SELECT  nafn, courseID, title, start_dagur, last_dagur, price
+    FROM    tblTeacher, tblTeach, tblCourse 
+    WHERE   tblTeacher.teacherID == tblTeach.z_idTeacher 
+    AND     tblTeach.z_idCourse == tblCourse.courseID
+    AND     tblCourse.id = ?;   
+  `; 
   db.get(sql, [id], (err, rows) => {
     if (err) {
       return console.error(err.message);
     }
     if (rows) {
-      res.render('updateArt', { arts: rows }); // Pass current user data to the form
-      //console.log(rows);
+      res.render('updateArt', { art: rows }); // Pass current user data to the form
+      ad_safna_ollum_append(`Update Course ${id}`);      
     } else {
-      res.status(404).send('Art Id not found');
+      res.status(404).send('Coruse ID not found');
     }
+  });
+});
+
+app.post('/updateCourse', (req, res) => {
+  const {courseID, title, price, start_dagur, last_dagur, idteacher} = req.body; 
+  const sql_course_update = `
+    UPDATE  tblCourse
+    SET     title = ?, start_dagur = ?, last_dagur = ?, price = ?
+    WHERE   courseID = ?;
+  `;
+  const sql_teach_update = `
+    UPDATE  tblTeach
+    SET     z_idTeacher = ?
+    WHERE   z_idCourse = ?;
+  `;
+  console.log(courseID, title, start_dagur, last_dagur, price);
+  console.log(courseID, idteacher); 
+  db.run(sql_course_update, [title, price, start_dagur, last_dagur, courseID], (err) => {
+    if(err){
+      return console.error(err.message); 
+    }
+    db.run(sql_teach_update, [idteacher, courseID], (err) => {
+      if(err) {
+        return console.error(err.message); 
+      }
+    });
+    ad_safna_ollum_append(`Update Course ${courseID}`); 
+    res.redirect('/');
   });
 });
 

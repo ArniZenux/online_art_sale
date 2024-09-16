@@ -11,22 +11,23 @@
 
 <main>
   <div class="jumbotron">
-    <h1>This is great</h1>
-    <p>Welcome to art sale - online</p>
+    <h2>Welcome to distance course - online</h2>
+    <h4>Edit course</h4>
   </div>
 
   <div class="container"> 
-    <p><a class="btn btn-secondary" href="/addArt" role="button">Add new art</a></p>
+    <p><a class="btn btn-secondary" href="/addArt" role="button">Add new course</a></p>
     <div class="row">
       <% arts.forEach(art => { %>
 
       <div class="col-md-4">
         <h2><%= art.name %></h2>
         <ul>
-          <li><strong><%= art.name %></strong></li>
+          <li><strong><%= art.title %></strong></li>
           <li><strong><%= art.price %></strong></li>
-          <li><strong><%= art.year %></strong></li>
-          <li><strong><%= art.artist %></strong></li>
+          <li><strong><%= art.start_dagur %></strong></li>
+          <li><strong><%= art.last_dagur%></strong></li>
+          <li><strong><%= art.nafn %></strong></li>
         </ul>
         
           <div class="row">
@@ -34,7 +35,7 @@
               <p><a class="btn btn-secondary" href="/update/<%= art.id %>" role="button">Update</a></p>
             </div>
             <div class="col-md-6">
-              <p><a class="btn btn-secondary" href="/deleteArt/<%= art.id %>" onclick="return confirm('Are you sure you want to delete this user?')" role="button">Delete</a></p>
+              <p><a class="btn btn-secondary" href="/deleteArt/<%= art.id %>" onclick="return confirm('Are you sure you want to delete?')" role="button">Delete</a></p>
             </div>
           </div>
 

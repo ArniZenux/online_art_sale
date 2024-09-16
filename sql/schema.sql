@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS tblCourse (
 );
 
 CREATE TABLE IF NOT EXISTS tblTeach (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   z_idTeacher INTEGER, 
   z_idCourse INTEGER,
   FOREIGN KEY(z_idTeacher) REFERENCES tblTeacher(teacherID),

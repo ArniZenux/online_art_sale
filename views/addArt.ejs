@@ -18,14 +18,15 @@
     <form action="/addNewArt" method="POST">
       <div class="mb-3">
         <label for="courseID" class="form-label">Number of course</label>
-      </div>
-      <div class="mb-3">
-        <label for="courseID" class="form-label">Number of course</label>
         <input type="text" class="form-control" id="courseID" name="courseID" >
       </div>
       <div class="mb-3">
-        <label for="title" class="form-label">Name of course</label>
+        <label for="title" class="form-label">Title</label>
         <input type="text" class="form-control" id="title" name="title" >
+      </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input type="text" class="form-control" id="price" name="price" >
       </div>
       <div class="mb-3">
         <label for="start_dagur" class="form-label">Start</label>
@@ -36,15 +37,14 @@
         <input type="text" class="form-control" id="last_dagur" name="last_dagur">
       </div>
       <div class="mb-3">
-        <label for="price" class="form-label">Teacher</label>
-        <input type="text" class="form-control" id="price" name="price">
+        <label for="idteacher" class="form-label">Teacher</label>
+        <select id="idteacher" name="idteacher" class="form-control">
+          <option value="112">Bob Marley</option>
+          <option value="211">Bill Nickson</option>
+          <option value="333">Don Corlone</option>
+        </select>
       </div>
       
-      <!--<div class="mb-3">
-        <label for="formFile" class="form-label">Image of art</label>
-        <input class="form-control" type="file" id="formFile">
-      </div>
-      -->
       <button class="btn btn-secondary" type="submit">Add</button>
     </form>
   </div>
