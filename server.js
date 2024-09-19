@@ -4,10 +4,10 @@ import cors from 'cors';
 import bodyParse from 'body-parser';
 import { ad_safna_ollum_append } from './utils/utils.js';
 import * as fs from 'fs';
-import { start } from 'repl';
 
 const dbFile2 = './data/onlineSchool.db';
 const logData = './var/logToFile.json';
+
 const port = 3000;
 
 const app = express();
@@ -66,33 +66,14 @@ app.get('/about', (req, res) => {
 */
 app.get('/user', (req, res) => {
   const _jsonData = getUserName();
-  console.log(_jsonData.password); 
+  //console.log(_jsonData.password); 
   res.render('user', {arts: _jsonData});
-});
-
-/* 
-  Admin
-*/
-app.get('/admin', (req, res) => {
-  res.render('admin');
-  /*fs.readFile(logData, 'utf8', (err, data) => {
-    if(err){
-      console.error(`Error reading Log File:`, err);
-      return res.status(500).send(`Error reading Log File`);
-    }
-    const jsonLogData = JSON.parse(data);
-    console.log(jsonLogData);
-
-    res.render('admin');
-  });*/
 });
 
 /*
   Edit - Admin View
 */
 app.get('/edit', (req, res ) => {
-  //const sql_teacher = `SELECT teacherID, nafn FROM tblTeacher;`;
-  //const sql = `SELECT * FROM tblCourse;`;
   const sql = `
     SELECT  tblCourse.id, nafn, title, start_dagur, last_dagur, price
     FROM    tblTeacher, tblTeach, tblCourse 
@@ -135,9 +116,6 @@ app.post('/addNewArt', (req, res) => {
     VALUES(?,?); 
   `;
 
-  console.log(courseID, title, start_dagur, last_dagur, price); 
-  console.log(courseID,idteacher); 
-
   db.run(sql_course, [courseID, title, start_dagur, last_dagur, price], (err) => {
     if(err) {
       return console.error(err.message);  
@@ -147,13 +125,15 @@ app.post('/addNewArt', (req, res) => {
         return console.error(err.message); 
       }
     });
-    ad_safna_ollum_append('Admin - Add New Course'); 
+    
+    ad_safna_ollum_append('Admin - Add New Course'); // admin page 
+
     res.redirect('/edit');
   });
 });
 
 /*
-  Delete art - Admin View
+  Delete  - Admin View
 */
 app.get('/deleteArt/:id', (req, res) => {
   const { id } = req.params; 
@@ -161,19 +141,20 @@ app.get('/deleteArt/:id', (req, res) => {
     DELETE FROM tblCourse 
     WHERE tblCourse.id = ?
   `;
-  //const sql_teach = 'DELETE FROM tblTeach WHERE tblTeach.z_idCourse = ?';
+
   db.run(sql_course, id, (err) => {
     if(err){
       return console.error(err.message); 
     }
-    console.log(`Course with ID ${id} deleted`);
-    ad_safna_ollum_append(`Delete Course ${id}`); 
+
+    ad_safna_ollum_append(`Admin - Delete Course`); // admin page
+
     res.redirect('/edit');
   });
 });
 
 /*
-  Update Art - Admin View 
+  Update  - Admin View 
 */
 app.get('/update/:id', (req, res) => {
   const { id } = req.params;
@@ -191,13 +172,15 @@ app.get('/update/:id', (req, res) => {
     }
     if (rows) {
       res.render('updateArt', { art: rows }); // Pass current user data to the form
-      ad_safna_ollum_append(`Update Course ${id}`);      
     } else {
       res.status(404).send('Coruse ID not found');
     }
   });
 });
 
+/*
+  Update POST - Admin View 
+*/
 app.post('/updateCourse', (req, res) => {
   const {courseID, title, price, start_dagur, last_dagur, idteacher} = req.body; 
   const sql_course_update = `
@@ -210,9 +193,8 @@ app.post('/updateCourse', (req, res) => {
     SET     z_idTeacher = ?
     WHERE   z_idCourse = ?;
   `;
-  console.log(courseID, title, start_dagur, last_dagur, price);
-  console.log(courseID, idteacher); 
-  db.run(sql_course_update, [title, price, start_dagur, last_dagur, courseID], (err) => {
+
+  db.run(sql_course_update, [title, start_dagur, last_dagur, price, courseID], (err) => {
     if(err){
       return console.error(err.message); 
     }
@@ -221,8 +203,25 @@ app.post('/updateCourse', (req, res) => {
         return console.error(err.message); 
       }
     });
-    ad_safna_ollum_append(`Update Course ${courseID}`); 
+    
+    ad_safna_ollum_append(`Admin - Update Course`); // admin page
+    
     res.redirect('/');
+  });
+});
+
+/* 
+  Admin
+*/
+app.get('/admin', (req, res) => {
+  fs.readFile(logData, 'utf8', (err, data) => {
+    if(err){
+      console.error(`Error reading Log File:`, err);
+      return res.status(500).send(`Error reading Log File`);
+    }
+    const jsonLogData = JSON.parse(data);
+
+    res.render('admin', { users: jsonLogData.users });  
   });
 });
 

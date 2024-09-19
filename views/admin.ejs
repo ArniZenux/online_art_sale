@@ -16,14 +16,12 @@
   </div>
   
   <div class="container"> 
-    <ol>
-      <li><span class="d-block p-2 bg-primary text-white">d-block</span></li>
-      <li><span class="d-block p-2 bg-primary text-white">d-block</span></li>
-      <li><span class="d-block p-2 bg-primary text-white">d-block</span></li>
-   
-    </ol>
+    <% users.forEach(user => { %> 
+    <ul>
+      <li><span class="d-block p-2 bg-primary text-white">Dagur : <%= user.dagur %> |  Tima: <%= user.tima %> | Do what: <%= user.virkja %> </span></li>
+    </ul>
+    <% }) %> 
   </div>
-
 </main>
 
 <footer>

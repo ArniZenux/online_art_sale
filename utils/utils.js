@@ -4,51 +4,39 @@ import * as os from 'os';
 const now = new Date();
 const time = now.toLocaleTimeString();
 const date = now.toLocaleDateString();
-
-// Get the current user's name
 const username = os.userInfo().username;
-
 const path = './var/logToFile.json'; //að safna öllum. 
 
-export function ad_safna_ollum_append(functionName){
-  const logLine = `Date: ${date}, Time: ${time}, User: ${username}, Function: ${functionName}\n`;
-  
-  fs.appendFile(path, logLine, (error) => {
-    if (error) {
-      console.log('An error has occurred ', error);
-      return;
+export function ad_safna_ollum_append(virkjaName){
+
+  const _dagur = date; 
+  const _tima  = time; 
+  const _virkjaName = virkjaName;
+
+  const logFile = {
+    dagur  : `"${_dagur}"`,
+    tima   : `"${_tima}"`,
+    virkja : `"${_virkjaName}"` 
+  };
+
+  fs.readFile(path, 'utf-8', (err, data) => {
+    if(err) {
+      console.error('Error reading json file:', err); 
+      return res.status(500).send('Error reading json file');
     }
-    console.log('Data written successfully to disk');
-  }); 
+
+    const jsonDATA = JSON.parse(data); 
+    jsonDATA.users.push(logFile); 
+
+    fs.writeFile(path, JSON.stringify(jsonDATA, null, 2), (err) => {
+      if(err) {
+        console.error('Error writing to JSON file:', err);
+        return res.status(500).send('Error writing to JSON file');
+      }
+    });
+  });
 }
 
 export function catchErrors(fn) {
-    return (req, res, next) => fn(req, res, next).catch(next);
-  }
-  
-  
-
-/*function ad_safna_ollum(){
-  const config = { ip: '192.0.2.1', port: 3000 };
-  
-  fs.writeFile(path, JSON.stringify(config, null, 2), (error) => {
-    if (error) {
-      console.log('An error has occurred ', error);
-      return;
-    }
-    console.log('Data written successfully to disk');
-  }); 
+  return (req, res, next) => fn(req, res, next).catch(next);
 }
-
-function ad_safna_ollum_append(functionName){
-  const config = { ip: '192.0.2.1', port: 3000 };
-  const logLine = `Date: ${date}, Time: ${time}, User: ${username}, Function: ${functionName}\n`;
-  
-  fs.appendFile(path, logLine, (error) => {
-    if (error) {
-      console.log('An error has occurred ', error);
-      return;
-    }
-    console.log('Data written successfully to disk');
-  }); 
-}*/
