@@ -14,10 +14,16 @@
   "author": "Arni Ingi Johannesson",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "ejs": "^3.1.10",
     "express": "^4.18.1",
+    "express-rate-limit": "^7.4.1",
+    "express-session": "^1.18.0",
+    "express-validator": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "password-validator": "^5.3.0",
     "sqlite3": "^5.1.7"
   }
 }

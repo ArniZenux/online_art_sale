@@ -5,6 +5,13 @@ import bodyParse from 'body-parser';
 import { ad_safna_ollum_append } from './utils/utils.js';
 import * as fs from 'fs';
 
+// assignment 6 
+import rateLimit from 'express-rate-limit';
+//import { Jwt } from 'jsonwebtoken';
+import session from 'express-session';
+import bcrypt from 'bcrypt';
+import passwordSchema from 'password-validator';
+
 const dbFile2 = './data/onlineSchool.db';
 const logData = './var/logToFile.json';
 
@@ -12,12 +19,26 @@ const port = 3000;
 
 const app = express();
 
+app.set('view engine', 'ejs');
+
 app.use(cors());
 app.use(bodyParse.json());
 app.use(bodyParse.urlencoded({ extended: false }));
 app.use(express.urlencoded({ extended: true }));
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: 60000 }  // 1-minute session cookie
+}));
 
-app.set('view engine', 'ejs');
+const z_user = [{ username: 'Arni', password: '$2b$10$vQVp1xtKqL2PaoYinOzmbe27JSyX7eFvq8oJyXW.8j7sT.KN9ZFOm' }];  // Password should be hashed
+
+const loginLimier = rateLimit( {  
+  windowMs: 1 * 60 * 1000, // 1 min  
+  max: 5, // limit to 5 attemts
+  message: 'Too many attempts.... wait and try again after 1 minutes..' 
+});
 
 let db = new sqlite3.Database(dbFile2, (err) => {
   if (err) {
@@ -49,7 +70,7 @@ app.get('/', (req, res) => {
     if(err) {
       return console.error(err.message);
     }
-    res.render('index', { arts: rows, data: _jsonData });
+    res.render('index', { arts: rows, data: _jsonData, user: req.session.user } );
   });
 });
 
@@ -58,7 +79,7 @@ app.get('/', (req, res) => {
 */ 
 app.get('/about', (req, res) => {
   //ad_safna_ollum_append('about'); 
-  res.render('about');
+  res.render('about', {user: req.session.user});
 });
 
 /* 
@@ -67,7 +88,7 @@ app.get('/about', (req, res) => {
 app.get('/user', (req, res) => {
   const _jsonData = getUserName();
   //console.log(_jsonData.password); 
-  res.render('user', {arts: _jsonData});
+  res.render('user', {arts: _jsonData, user: req.session.user});
 });
 
 /*
@@ -84,7 +105,7 @@ app.get('/edit', (req, res ) => {
     if(err) {
       return console.error(err.message);
     }
-    res.render('edit', { arts: rows });
+    res.render('edit', { arts: rows, user: req.session.user });
   });
 });
 
@@ -97,7 +118,7 @@ app.get('/addArt', (req, res) => {
     if(err) {
       return console.error(err.message);
     }
-    res.render('addArt', { teacher: rows });
+    res.render('addArt', { teacher: rows , user: req.session.user});
   });
 });
 
@@ -221,8 +242,77 @@ app.get('/admin', (req, res) => {
     }
     const jsonLogData = JSON.parse(data);
 
-    res.render('admin', { users: jsonLogData.users });  
+    res.render('admin', { users: jsonLogData.users, user: req.session.user });  
   });
+});
+
+
+/*
+  Login GET 
+*/
+app.get('/login', (req, res) =>  {
+  res.render('login', { user: req.session.user}); 
+});
+
+/*
+  Register GET
+*/
+app.get('/register', (req, res) => {
+  const message = '';
+  res.render('register', {user: req.session.user, message});
+});
+
+/*
+  Login POST
+*/
+app.post('/login', loginLimier, async (req, res) => {
+  const { username, password } = req.body;
+  console.log('Notandi: ', username);
+  console.log('Password: ', password); 
+  const user = z_user.find(u => u.username === username);
+  if (user && await bcrypt.compare(password, user.password) ) {
+      req.session.user = user;
+      return res.redirect('/');
+  }
+  res.redirect('/login');
+});
+
+/*
+  Register POST
+*/
+
+app.post('/register', async (req, res) => {
+  const { username, password } = req.body;
+  /*const schema = new passwordSchema();
+  schema
+    .is().min(3)
+    .is().max(5)
+    .has().uppercase()                             // Must have uppercase letters
+    .has().lowercase()                             // Must have lowercase letters
+    .has().digits(1)                               // Must have at least 2 digits
+    .has().not().spaces()                          // Should not have spaces
+  
+  if(!schema.validate(password)){
+    console.log('Nah nha password is not strong enough');
+  } else {
+    console.log('Strong');
+  }*/
+  const message = 'Password is not strong enough';
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  console.log('Notandi: ', username);
+  console.log('Password: ', hashedPassword); 
+  z_user.push( {username, password: hashedPassword});
+  ad_safna_ollum_append('New User registerd');
+  console.log('User registered successfully');
+  
+  res.redirect('/',);    
+  
+});
+
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
 });
 
 app.listen(port, () => {
