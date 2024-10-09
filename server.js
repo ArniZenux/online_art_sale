@@ -6,10 +6,11 @@ import { ad_safna_ollum_append } from './utils/utils.js';
 import * as fs from 'fs';
 
 // assignment 6 
-import rateLimit from 'express-rate-limit';
 //import { Jwt } from 'jsonwebtoken';
 import session from 'express-session';
 import bcrypt from 'bcrypt';
+
+import rateLimit from 'express-rate-limit';
 import passwordSchema from 'password-validator';
 
 const dbFile2 = './data/onlineSchool.db';
@@ -25,6 +26,7 @@ app.use(cors());
 app.use(bodyParse.json());
 app.use(bodyParse.urlencoded({ extended: false }));
 app.use(express.urlencoded({ extended: true }));
+
 app.use(session({
   secret: 'your-secret-key',
   resave: false,
@@ -32,7 +34,12 @@ app.use(session({
   cookie: { maxAge: 60000 }  // 1-minute session cookie
 }));
 
-const z_user = [{ username: 'Arni', password: '$2b$10$vQVp1xtKqL2PaoYinOzmbe27JSyX7eFvq8oJyXW.8j7sT.KN9ZFOm' }];  // Password should be hashed
+const z_user = [
+  { 
+    username: 'Arni', 
+    password: '$2b$10$vQVp1xtKqL2PaoYinOzmbe27JSyX7eFvq8oJyXW.8j7sT.KN9ZFOm' // 123
+  }
+];  // Password should be hashed 
 
 const loginLimier = rateLimit( {  
   windowMs: 1 * 60 * 1000, // 1 min  
@@ -248,27 +255,38 @@ app.get('/admin', (req, res) => {
 
 
 /*
-  Login GET 
+  Login GET - Server.js 
 */
 app.get('/login', (req, res) =>  {
-  res.render('login', { user: req.session.user}); 
+  const message = '';  // Error message (brute-force, weak password )
+  res.render('login', { user: req.session.user, error_msg : message}); 
 });
 
 /*
-  Register GET
+  Register GET - Server.js
 */
 app.get('/register', (req, res) => {
-  const message = '';
-  res.render('register', {user: req.session.user, message});
+  const message = '';   // Error message (brute-force, weak password ) 
+  res.render('register', {user: req.session.user, error_msg : message});
 });
 
 /*
-  Login POST
+  Logout GET  - Server.js 
+*/
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
+});
+
+/*
+  Login POST - Server.js
 */
 app.post('/login', loginLimier, async (req, res) => {
   const { username, password } = req.body;
+  
   console.log('Notandi: ', username);
   console.log('Password: ', password); 
+
   const user = z_user.find(u => u.username === username);
   if (user && await bcrypt.compare(password, user.password) ) {
       req.session.user = user;
@@ -278,12 +296,11 @@ app.post('/login', loginLimier, async (req, res) => {
 });
 
 /*
-  Register POST
+  Register POST - Server.js 
 */
-
 app.post('/register', async (req, res) => {
   const { username, password } = req.body;
-  /*const schema = new passwordSchema();
+  const schema = new passwordSchema();
   schema
     .is().min(3)
     .is().max(5)
@@ -296,12 +313,13 @@ app.post('/register', async (req, res) => {
     console.log('Nah nha password is not strong enough');
   } else {
     console.log('Strong');
-  }*/
+  }
   const message = 'Password is not strong enough';
-
   const hashedPassword = await bcrypt.hash(password, 10);
+
   console.log('Notandi: ', username);
   console.log('Password: ', hashedPassword); 
+
   z_user.push( {username, password: hashedPassword});
   ad_safna_ollum_append('New User registerd');
   console.log('User registered successfully');
@@ -310,10 +328,6 @@ app.post('/register', async (req, res) => {
   
 });
 
-app.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.redirect('/');
-});
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
