@@ -8,15 +8,25 @@ import * as fs from 'fs';
 // assignment 6 
 //import { Jwt } from 'jsonwebtoken';
 import session from 'express-session';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt'; 
+
+import dotenv from 'dotenv';   // session fixation 
 
 import rateLimit from 'express-rate-limit';
 import passwordSchema from 'password-validator';
 
+
 const dbFile2 = './data/onlineSchool.db';
 const logData = './var/logToFile.json';
 
-const port = 3000;
+dotenv.config();
+
+const {
+  PORT: port,
+  JWT_SECRET : jwtSecret,
+  SESSION_SECRET: sessionSecret,
+  DATABASE_URL: connectionString,
+} = process.env;
 
 const app = express();
 
@@ -31,15 +41,19 @@ app.use(session({
   secret: 'your-secret-key',
   resave: false,
   saveUninitialized: true,
-  cookie: { maxAge: 60000 }  // 1-minute session cookie
+  cookie: { 
+      maxAge: 60000,
+      secure: false
+     }  
 }));
+// 1-minute session cookie and "secure" should be true in production with HTTPS
 
 const z_user = [
   { 
     username: 'Arni', 
     password: '$2b$10$vQVp1xtKqL2PaoYinOzmbe27JSyX7eFvq8oJyXW.8j7sT.KN9ZFOm' // 123
   }
-];  // Password should be hashed 
+];  // Password should be hashed and storage in database
 
 const loginLimier = rateLimit( {  
   windowMs: 1 * 60 * 1000, // 1 min  
@@ -300,6 +314,7 @@ app.post('/login', loginLimier, async (req, res) => {
 */
 app.post('/register', async (req, res) => {
   const { username, password } = req.body;
+
   const schema = new passwordSchema();
   schema
     .is().min(3)
@@ -310,22 +325,18 @@ app.post('/register', async (req, res) => {
     .has().not().spaces()                          // Should not have spaces
   
   if(!schema.validate(password)){
-    console.log('Nah nha password is not strong enough');
+    const message = 'Password is not strong enough';
+    res.render('register', {user: req.session.user, error_msg : message});
   } else {
-    console.log('Strong');
+    const hashedPassword = await bcrypt.hash(password, 10);
+    z_user.push( {username, password: hashedPassword});
+    ad_safna_ollum_append('New User registerd');
+    console.log('Notandi: ', username);
+    console.log('Password: ', password); 
+    console.log('Hashed password: ', hashedPassword); 
+    console.log('User registered successfully');
+    res.redirect('/',);    
   }
-  const message = 'Password is not strong enough';
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  console.log('Notandi: ', username);
-  console.log('Password: ', hashedPassword); 
-
-  z_user.push( {username, password: hashedPassword});
-  ad_safna_ollum_append('New User registerd');
-  console.log('User registered successfully');
-  
-  res.redirect('/',);    
-  
 });
 
 
