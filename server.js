@@ -36,15 +36,6 @@ app.set('view engine', 'ejs');
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
-// CSRF stuff 
-app.use(cookieParser()); // To parse cookies
-app.use(bodyParse.urlencoded({ extended: false }));
-app.use(bodyParse.json());
-
-// CSRF protection middleware
-const csrfProtection = csurf({ cookie: true });
-app.use(csrfProtection);
-
 app.use(session({
   secret: 'your-secret-key',
   resave: false,
@@ -55,6 +46,24 @@ app.use(session({
      }  
 }));
 // 1-minute session cookie and "secure" should be true in production with HTTPS
+
+// CSRF stuff 
+app.use(bodyParse.urlencoded({ extended: false }));
+app.use(bodyParse.json());
+app.use(cookieParser()); // To parse cookies
+
+// CSRF protection middleware
+const csrfProtection = csurf({ cookie: {secure: true } });
+app.use(csrfProtection);
+
+app.use((req, res, next) => {
+  if(!req.session.usertype){
+    req.session.usertype = 'Guest';
+  }
+  res.locals.usertype = req.session.usertype;
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
 
 let db = new sqlite3.Database(dbFile2, (err) => {
   if (err) {
@@ -127,7 +136,7 @@ app.get('/admin', (req, res) => {
   CSRF token is passed to the view/template, 
   in this case we're sending it as JSON
 */
-app.get('/login', (req, res) =>  {
+app.get('/login',  (req, res) =>  {
   logger.info('GET / login accessed');  // Info level logging
   const message = '';  // Error message (brute-force, weak password )
   res.render('login', {csrfToken: req.csrfToken(), user: req.session.user, error_msg : message, usertype: req.session.usertype}); 
@@ -180,7 +189,7 @@ const z_user = [
 /*
   Login POST - Server.js
 */
-app.post('/login',loginLimier, async (req, res) => {
+app.post('/login', loginLimier,  async (req, res) => {
   const { username, password } = req.body;
   
   console.log('Notandi: ', username);
@@ -260,6 +269,16 @@ app.post('/registeradmin', async (req, res) => {
     console.log('User registered successfully');
     logger.info(`POST / registier accepted - New teacher add : ${username}`);  // Info level logging
     res.redirect('/',);    
+  }
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  if (err.code === 'EBADCSRFTOKEN') {
+    // CSRF token mismatch
+    res.status(403).send('Invalid CSRF token');
+  } else {
+    next(err);
   }
 });
 
