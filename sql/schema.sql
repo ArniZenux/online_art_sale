@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS tblUsers (
   userID INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT,
-  password TEXT,
+  password TEXT
 );
 
 /*CREATE TABLE IF NOT EXISTS tblStudent (

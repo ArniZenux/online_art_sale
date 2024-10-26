@@ -1,41 +1,49 @@
 import express from 'express';
 import sqlite3 from 'sqlite3';
 import cors from 'cors';
-import bodyParse from 'body-parser';
-import { ad_safna_ollum_append } from './utils/utils.js';
-import * as fs from 'fs';
 
-// assignment 6 
-//import { Jwt } from 'jsonwebtoken';
+
+// CSRF ///
+import cookieParser from 'cookie-parser';
+import bodyParse from 'body-parser';
+import csurf from 'csurf';
+///////////////////////////////////////////////
+
 import session from 'express-session';
 import bcrypt from 'bcrypt'; 
-
+import * as fs from 'fs';
 import dotenv from 'dotenv';   // session fixation 
-
-import rateLimit from 'express-rate-limit';
 import passwordSchema from 'password-validator';
 
+import { ad_safna_ollum_append } from './utils/utils.js';
+import { logger } from './utils/logger.js';
+import { loginLimier } from './utils/ratelimit2.js';
 
 const dbFile2 = './data/onlineSchool.db';
 const logData = './var/logToFile.json';
+let name = '';
 
 dotenv.config();
 
 const {
   PORT: port,
-  JWT_SECRET : jwtSecret,
-  SESSION_SECRET: sessionSecret,
-  DATABASE_URL: connectionString,
 } = process.env;
 
 const app = express();
 
+// MiddleWares. 
 app.set('view engine', 'ejs');
-
 app.use(cors());
-app.use(bodyParse.json());
-app.use(bodyParse.urlencoded({ extended: false }));
 app.use(express.urlencoded({ extended: true }));
+
+// CSRF stuff 
+app.use(cookieParser()); // To parse cookies
+app.use(bodyParse.urlencoded({ extended: false }));
+app.use(bodyParse.json());
+
+// CSRF protection middleware
+const csrfProtection = csurf({ cookie: true });
+app.use(csrfProtection);
 
 app.use(session({
   secret: 'your-secret-key',
@@ -48,208 +56,55 @@ app.use(session({
 }));
 // 1-minute session cookie and "secure" should be true in production with HTTPS
 
-const z_user = [
-  { 
-    username: 'Arni', 
-    password: '$2b$10$vQVp1xtKqL2PaoYinOzmbe27JSyX7eFvq8oJyXW.8j7sT.KN9ZFOm' // 123
-  }
-];  // Password should be hashed and storage in database
-
-const loginLimier = rateLimit( {  
-  windowMs: 1 * 60 * 1000, // 1 min  
-  max: 5, // limit to 5 attemts
-  message: 'Too many attempts.... wait and try again after 1 minutes..' 
-});
-
 let db = new sqlite3.Database(dbFile2, (err) => {
   if (err) {
-    console.error(err.message);
+    logger.error(err.message);  // Info level logging
   }
-  console.log('Connected to the SQLite database.');
+  logger.info(`Connected to the SQLite database.`);
 });
-
-function getUserName(){
-  const jsonData = {
-    name     :  'Anna Jona',
-    password :  '1234'
-  }
-  return jsonData; 
-}
 
 /*
   Index - Content View
 */
 app.get('/', (req, res) => {
-  const _jsonData = getUserName();
-  const sql = `
-    SELECT  nafn, title, start_dagur, last_dagur, price
-    FROM    tblTeacher, tblTeach, tblCourse 
-    WHERE   tblTeacher.teacherID == tblTeach.z_idTeacher 
-    AND     tblTeach.z_idCourse == tblCourse.courseID;
-  `;
-  db.all(sql, [], (err, rows) => {
-    if(err) {
-      return console.error(err.message);
-    }
-    res.render('index', { arts: rows, data: _jsonData, user: req.session.user } );
-  });
-});
-
-/*
-  About - Content View
-*/ 
-app.get('/about', (req, res) => {
-  //ad_safna_ollum_append('about'); 
-  res.render('about', {user: req.session.user});
+  /*if ( req.session.usertype !== 'Guest' ) {
+    logger.info(`Index logging - Name: Guest`);
+  } else {
+    logger.info(`Index logging - Name: ${name}`);
+    */
+   res.render('index', {user: req.session.user, usertype: req.session.usertype});
+  
 });
 
 /* 
-  User
+  Head Teacher page
 */
-app.get('/user', (req, res) => {
-  const _jsonData = getUserName();
-  //console.log(_jsonData.password); 
-  res.render('user', {arts: _jsonData, user: req.session.user});
+app.get('/headteacher', (req, res) => {
+  logger.info(`Head Teacher - Dashboard - Name: ${name}`);
+  res.render('headteacher', {user: req.session.user, usertype: req.session.usertype});
 });
 
-/*
-  Edit - Admin View
+/* 
+  Teacher
 */
-app.get('/edit', (req, res ) => {
-  const sql = `
-    SELECT  tblCourse.id, nafn, title, start_dagur, last_dagur, price
-    FROM    tblTeacher, tblTeach, tblCourse 
-    WHERE   tblTeacher.teacherID == tblTeach.z_idTeacher 
-    AND     tblTeach.z_idCourse == tblCourse.courseID;
-  `; 
-  db.all(sql, [], (err, rows) => {
-    if(err) {
-      return console.error(err.message);
-    }
-    res.render('edit', { arts: rows, user: req.session.user });
-  });
+app.get('/teacher', (req, res) => {
+  logger.info(`Teacher - Dashboard - Name: ${name}`);
+  res.render('teacher', {user: req.session.user, usertype: req.session.usertype});
 });
 
-/*
-  Add - Admin View
+/* 
+  Student
 */
-app.get('/addArt', (req, res) => {
-  const sql_teacher = 'SELECT teacherID, nafn FROM tblTeacher;';
-  db.all(sql_teacher, [], (err, rows) => {
-    if(err) {
-      return console.error(err.message);
-    }
-    res.render('addArt', { teacher: rows , user: req.session.user});
-  });
+app.get('/student', (req, res) => {
+  logger.info(`Student - Dashboard - Name: ${name}`);
+  res.render('student', {user: req.session.user, usertype: req.session.usertype});
 });
 
-
-app.post('/addNewArt', (req, res) => {
-  const {courseID, title, price, start_dagur, last_dagur, idteacher} = req.body; 
-  const sql_course = `
-    INSERT INTO 
-    tblCourse(courseID, title, start_dagur, last_dagur, price) 
-    VALUES(?,?,?,?,?);
-  `;
-
-  const sql_teach = `
-    INSERT INTO 
-    tblTeach(z_idTeacher, z_idCourse) 
-    VALUES(?,?); 
-  `;
-
-  db.run(sql_course, [courseID, title, start_dagur, last_dagur, price], (err) => {
-    if(err) {
-      return console.error(err.message);  
-    }
-    db.run(sql_teach, [idteacher, courseID], (err) => {
-      if(err) {
-        return console.error(err.message); 
-      }
-    });
-    
-    ad_safna_ollum_append('Admin - Add New Course'); // admin page 
-
-    res.redirect('/edit');
-  });
-});
-
-/*
-  Delete  - Admin View
+/* 
+  Guest
 */
-app.get('/deleteArt/:id', (req, res) => {
-  const { id } = req.params; 
-  const sql_course = `
-    DELETE FROM tblCourse 
-    WHERE tblCourse.id = ?
-  `;
-
-  db.run(sql_course, id, (err) => {
-    if(err){
-      return console.error(err.message); 
-    }
-
-    ad_safna_ollum_append(`Admin - Delete Course`); // admin page
-
-    res.redirect('/edit');
-  });
-});
-
-/*
-  Update  - Admin View 
-*/
-app.get('/update/:id', (req, res) => {
-  const { id } = req.params;
-  //const sql = 'SELECT * FROM tblCourse WHERE id = ?';
-  const sql = `
-    SELECT  nafn, courseID, title, start_dagur, last_dagur, price
-    FROM    tblTeacher, tblTeach, tblCourse 
-    WHERE   tblTeacher.teacherID == tblTeach.z_idTeacher 
-    AND     tblTeach.z_idCourse == tblCourse.courseID
-    AND     tblCourse.id = ?;   
-  `; 
-  db.get(sql, [id], (err, rows) => {
-    if (err) {
-      return console.error(err.message);
-    }
-    if (rows) {
-      res.render('updateArt', { art: rows }); // Pass current user data to the form
-    } else {
-      res.status(404).send('Coruse ID not found');
-    }
-  });
-});
-
-/*
-  Update POST - Admin View 
-*/
-app.post('/updateCourse', (req, res) => {
-  const {courseID, title, price, start_dagur, last_dagur, idteacher} = req.body; 
-  const sql_course_update = `
-    UPDATE  tblCourse
-    SET     title = ?, start_dagur = ?, last_dagur = ?, price = ?
-    WHERE   courseID = ?;
-  `;
-  const sql_teach_update = `
-    UPDATE  tblTeach
-    SET     z_idTeacher = ?
-    WHERE   z_idCourse = ?;
-  `;
-
-  db.run(sql_course_update, [title, start_dagur, last_dagur, price, courseID], (err) => {
-    if(err){
-      return console.error(err.message); 
-    }
-    db.run(sql_teach_update, [idteacher, courseID], (err) => {
-      if(err) {
-        return console.error(err.message); 
-      }
-    });
-    
-    ad_safna_ollum_append(`Admin - Update Course`); // admin page
-    
-    res.redirect('/');
-  });
+app.get('/guest', (req, res) => {
+  res.render('guest', {user: req.session.user, usertype: req.session.usertype});
 });
 
 /* 
@@ -267,21 +122,33 @@ app.get('/admin', (req, res) => {
   });
 });
 
-
 /*
-  Login GET - Server.js 
+  Login GET - Server.js with csrfProtect. 
+  CSRF token is passed to the view/template, 
+  in this case we're sending it as JSON
 */
 app.get('/login', (req, res) =>  {
+  logger.info('GET / login accessed');  // Info level logging
   const message = '';  // Error message (brute-force, weak password )
-  res.render('login', { user: req.session.user, error_msg : message}); 
+  res.render('login', {csrfToken: req.csrfToken(), user: req.session.user, error_msg : message, usertype: req.session.usertype}); 
 });
 
 /*
   Register GET - Server.js
 */
 app.get('/register', (req, res) => {
+  logger.info('GET / Register accessed');  // Info level logging
   const message = '';   // Error message (brute-force, weak password ) 
-  res.render('register', {user: req.session.user, error_msg : message});
+  res.render('register', {user: req.session.user, error_msg : message, usertype: req.session.usertype});
+});
+
+/*
+  Register GET - Server.js
+*/
+app.get('/registeradmin', (req, res) => {
+  logger.info('GET / Register accessed');  // Info level logging
+  const message = '';   // Error message (brute-force, weak password ) 
+  res.render('registerAdmin', {user: req.session.user, error_msg : message, usertype: req.session.usertype});
 });
 
 /*
@@ -292,10 +159,28 @@ app.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
+const z_user = [
+  {
+    username: 'Arni', 
+    password: '$2b$10$vQVp1xtKqL2PaoYinOzmbe27JSyX7eFvq8oJyXW.8j7sT.KN9ZFOm', // 123
+    usertype: 'headteacher',
+  },
+  {
+    username: 'anna', 
+    password: '$2b$10$EozXJcNdwSSh.ElDbWqeNuwOKnGOhLoujIHeNVICQ4xHYfsf.huJ2', // 321Ba
+    usertype: 'teacher',
+  },
+  {
+    username: 'robert', 
+    password: '$2b$10$yJrMMLJuDSema10Zvn5GXugyNA0qa52UAnv/r792mGoA5mPltAd3S', // roB81
+    usertype: 'student'
+  }
+];  // Password should be hashed and storage in database
+
 /*
   Login POST - Server.js
 */
-app.post('/login', loginLimier, async (req, res) => {
+app.post('/login',loginLimier, async (req, res) => {
   const { username, password } = req.body;
   
   console.log('Notandi: ', username);
@@ -303,10 +188,15 @@ app.post('/login', loginLimier, async (req, res) => {
 
   const user = z_user.find(u => u.username === username);
   if (user && await bcrypt.compare(password, user.password) ) {
+      name = user.username;
       req.session.user = user;
+      req.session.usertype = user.usertype;
+      logger.info(`POST / accepted - Name : ${name}`);  // Info level logging
       return res.redirect('/');
+  } else {
+    res.redirect('/login');
+    logger.warn('POST / login rejected');  // Info level logging
   }
-  res.redirect('/login');
 });
 
 /*
@@ -326,20 +216,54 @@ app.post('/register', async (req, res) => {
   
   if(!schema.validate(password)){
     const message = 'Password is not strong enough';
-    res.render('register', {user: req.session.user, error_msg : message});
+    logger.warn(`POST / registier - password weaks!!`);  // Info level logging
+    res.render('register', {user: req.session.user, error_msg : message, usertype: req.session.usertype});
   } else {
     const hashedPassword = await bcrypt.hash(password, 10);
-    z_user.push( {username, password: hashedPassword});
+    z_user.push( {username, password: hashedPassword, usertype: 'student'} );
     ad_safna_ollum_append('New User registerd');
     console.log('Notandi: ', username);
     console.log('Password: ', password); 
     console.log('Hashed password: ', hashedPassword); 
     console.log('User registered successfully');
+    logger.info(`POST / registier accepted - New student add : ${username}`);  // Info level logging
     res.redirect('/',);    
   }
 });
 
+/*
+  Register POST - Server.js 
+*/
+app.post('/registeradmin', async (req, res) => {
+  const { username, password } = req.body;
+
+  const schema = new passwordSchema();
+  schema
+    .is().min(3)
+    .is().max(5)
+    .has().uppercase()                             // Must have uppercase letters
+    .has().lowercase()                             // Must have lowercase letters
+    .has().digits(1)                               // Must have at least 2 digits
+    .has().not().spaces()                          // Should not have spaces
+  
+  if(!schema.validate(password)){
+    const message = 'Password is not strong enough';
+    logger.warn(`POST / registier - password weaks!!`);  // Info level logging
+    res.render('register', {user: req.session.user, error_msg : message, usertype: req.session.usertype});
+  } else {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    z_user.push( {username, password: hashedPassword, usertype: 'teacher'});
+    ad_safna_ollum_append('New teacher registerd');
+    console.log('Notandi: ', username);
+    console.log('Password: ', password); 
+    console.log('Hashed password: ', hashedPassword); 
+    console.log('User registered successfully');
+    logger.info(`POST / registier accepted - New teacher add : ${username}`);  // Info level logging
+    res.redirect('/',);    
+  }
+});
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}/`);
+  //console.log(`Server running at http://localhost:${port}/`);
+  logger.info(`Server running at http://localhost:${port}/`);  // Info level logging
 });

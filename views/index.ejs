@@ -14,28 +14,6 @@
     <h2>Welcome to distance course - online</h2>
     <h4><%= user ? user.username : 'Guest' %></h4>
   </div>
-
-  <div class="container"> 
-    <div class="row">
-      <% arts.forEach(art => { %>
-
-      <div class="col-md-4">
-        <h2><%= art.name %></h2>
-        <ul>
-          <li>Title: <strong><%= art.title %></strong></li>
-          <li>Price: <strong><%= art.price %></strong> $ </li>
-          <li>Start: <strong><%= art.start_dagur %></strong></li>
-          <li>End: <strong><%= art.last_dagur%></strong></li>
-          <li>Teacher: <strong><%= art.nafn %></strong></li>
-        </ul>
-        <a class="btn btn-secondary" href="#" data-toggle="tooltip" data-placement="bottom" title="inactivate">Register</a>
-      </div>
-    <% }) %>
-      <hr>
-    </div> 
-  
-  </div>
-
 </main>
 
 <footer>

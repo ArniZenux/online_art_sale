@@ -1,0 +1,174 @@
+2024-10-22 17:37:36 [info]: GET / login accessed
+2024-10-22 17:38:49 [info]: GET / login accessed
+2024-10-22 17:38:54 [info]: GET / login accessed
+2024-10-22 17:43:07 [info]: GET / login accessed
+2024-10-22 17:50:44 [info]: GET / login accessed
+2024-10-22 17:50:58 [info]: GET / login accessed
+2024-10-22 17:51:58 [info]: GET / login accessed
+2024-10-22 17:52:04 [info]: POST / login rejected
+2024-10-22 17:52:04 [info]: GET / login accessed
+2024-10-22 17:54:08 [info]: GET / login accessed
+2024-10-22 18:15:29 [info]: GET / login accessed
+2024-10-22 18:16:01 [info]: GET / login accessed
+2024-10-22 18:16:42 [info]: GET / login accessed
+2024-10-22 18:16:54 [info]: GET / login accessed
+2024-10-22 18:16:59 [info]: POST / login rejected
+2024-10-22 18:16:59 [info]: GET / login accessed
+2024-10-22 18:17:12 [info]: GET / login accessed
+2024-10-22 18:30:18 [warn]: GET / login accessed
+2024-10-22 18:30:25 [error]: GET / login accessed
+2024-10-22 18:30:33 [info]: GET / login accessed
+2024-10-22 18:30:52 [info]: Server running at http://localhost:8080/
+2024-10-22 18:30:59 [info]: Server running at http://localhost:8080/
+2024-10-22 18:32:24 [info]: Server running at http://localhost:8080/
+2024-10-22 18:32:24 [info]: Connected to the SQLite database.
+2024-10-22 18:33:01 [info]: Server running at http://localhost:8080/
+2024-10-22 18:33:01 [info]: Connected to the SQLite database.
+2024-10-22 18:33:04 [info]: Index logging
+2024-10-22 18:33:08 [info]: Index logging
+2024-10-22 18:33:37 [info]: Server running at http://localhost:8080/
+2024-10-22 18:33:37 [info]: Connected to the SQLite database.
+2024-10-22 18:33:39 [info]: GET / login accessed
+2024-10-22 18:33:44 [info]: Index logging
+2024-10-22 18:33:59 [info]: Server running at http://localhost:8080/
+2024-10-22 18:33:59 [info]: Connected to the SQLite database.
+2024-10-22 18:34:03 [info]: Index logging
+2024-10-22 18:34:04 [info]: GET / login accessed
+2024-10-22 18:34:08 [info]: Index logging
+2024-10-22 18:34:08 [info]: Name: [object Object]
+2024-10-22 18:34:50 [info]: Server running at http://localhost:8080/
+2024-10-22 18:34:50 [info]: Connected to the SQLite database.
+2024-10-22 18:35:06 [info]: Server running at http://localhost:8080/
+2024-10-22 18:35:06 [info]: Connected to the SQLite database.
+2024-10-22 18:35:20 [info]: Server running at http://localhost:8080/
+2024-10-22 18:35:20 [info]: Connected to the SQLite database.
+2024-10-22 18:35:23 [info]: Index logging
+2024-10-22 18:35:24 [info]: Index logging
+2024-10-22 18:35:26 [info]: GET / login accessed
+2024-10-22 18:35:32 [info]: Index logging
+2024-10-22 18:35:34 [info]: Name: Arni
+2024-10-22 18:35:47 [info]: Index logging
+2024-10-22 18:35:48 [info]: Name: Arni
+2024-10-22 18:35:50 [info]: Index logging
+2024-10-22 18:35:51 [info]: Name: Arni
+2024-10-22 18:36:04 [info]: Server running at http://localhost:8080/
+2024-10-22 18:36:04 [info]: Connected to the SQLite database.
+2024-10-22 18:36:05 [info]: Index logging
+2024-10-22 18:36:05 [info]: Name: 
+2024-10-22 18:36:07 [info]: GET / login accessed
+2024-10-22 18:36:11 [info]: Index logging
+2024-10-22 18:36:11 [info]: Name: Arni
+2024-10-22 18:36:13 [info]: Name: Arni
+2024-10-22 18:36:14 [info]: Index logging
+2024-10-22 18:36:14 [info]: Name: Arni
+2024-10-22 18:36:15 [info]: Name: Arni
+2024-10-22 18:36:39 [info]: Server running at http://localhost:8080/
+2024-10-22 18:36:39 [info]: Connected to the SQLite database.
+2024-10-22 18:36:40 [info]: Index logging
+2024-10-22 18:36:40 [info]: Name: 
+2024-10-22 18:36:41 [info]: GET / login accessed
+2024-10-22 18:36:45 [info]: Index logging
+2024-10-22 18:36:45 [info]: Name: Arni
+2024-10-22 18:36:46 [info]: Head Teacher - Dashboard - Name: Arni
+2024-10-22 18:37:28 [info]: Server running at http://localhost:8080/
+2024-10-22 18:37:28 [info]: Connected to the SQLite database.
+2024-10-22 18:39:08 [info]: Server running at http://localhost:8080/
+2024-10-22 18:39:08 [info]: Connected to the SQLite database.
+2024-10-22 18:39:10 [info]: Index logging
+2024-10-22 18:39:10 [info]: Name: 
+2024-10-22 18:39:11 [info]: GET / login accessed
+2024-10-22 18:39:16 [info]: POST / accepted - Name : Arni
+2024-10-22 18:39:16 [info]: Index logging
+2024-10-22 18:39:16 [info]: Name: Arni
+2024-10-22 18:39:22 [info]: Index logging
+2024-10-22 18:39:22 [info]: Name: Arni
+2024-10-22 18:39:24 [info]: GET / login accessed
+2024-10-22 18:39:26 [warn]: POST / login rejected
+2024-10-22 18:39:26 [info]: GET / login accessed
+2024-10-22 18:39:39 [warn]: POST / login rejected
+2024-10-22 18:39:39 [info]: GET / login accessed
+2024-10-22 18:39:40 [warn]: POST / login rejected
+2024-10-22 18:39:40 [info]: GET / login accessed
+2024-10-22 18:39:42 [warn]: POST / login rejected
+2024-10-22 18:39:42 [info]: GET / login accessed
+2024-10-22 18:41:26 [info]: Server running at http://localhost:8080/
+2024-10-22 18:41:26 [info]: Connected to the SQLite database.
+2024-10-22 18:43:18 [info]: Server running at http://localhost:8080/
+2024-10-22 18:43:18 [info]: Connected to the SQLite database.
+2024-10-22 18:43:56 [info]: Server running at http://localhost:8080/
+2024-10-22 18:43:56 [info]: Connected to the SQLite database.
+2024-10-22 18:44:05 [info]: Index logging
+2024-10-22 18:44:05 [info]: Name: 
+2024-10-22 18:44:07 [info]: GET / Register accessed
+2024-10-22 18:44:15 [info]: POST / registier accepted - Name : bob
+2024-10-22 18:44:15 [info]: Index logging
+2024-10-22 18:44:15 [info]: Name: 
+2024-10-22 18:44:27 [info]: GET / login accessed
+2024-10-22 18:44:32 [info]: POST / accepted - Name : bob
+2024-10-22 18:44:32 [info]: Index logging
+2024-10-22 18:44:32 [info]: Name: bob
+2024-10-22 18:44:44 [info]: Server running at http://localhost:8080/
+2024-10-22 18:44:44 [info]: Connected to the SQLite database.
+2024-10-22 18:46:09 [info]: Server running at http://localhost:8080/
+2024-10-22 18:46:09 [info]: Connected to the SQLite database.
+2024-10-22 18:46:10 [info]: Index logging
+2024-10-22 18:46:10 [info]: Name: 
+2024-10-22 18:46:12 [info]: GET / Register accessed
+2024-10-22 18:46:18 [warn]: POST / registier - password weaks!!
+2024-10-22 18:46:51 [info]: Server running at http://localhost:8080/
+2024-10-22 18:46:51 [info]: Connected to the SQLite database.
+2024-10-22 18:46:53 [info]: Index logging
+2024-10-22 18:46:53 [info]: Name: 
+2024-10-22 18:46:55 [info]: GET / Register accessed
+2024-10-22 18:46:58 [warn]: POST / registier - password weaks!!
+2024-10-22 18:47:35 [info]: Server running at http://localhost:8080/
+2024-10-22 18:47:35 [info]: Connected to the SQLite database.
+2024-10-22 18:47:36 [info]: GET / Register accessed
+2024-10-22 18:47:41 [info]: GET / Register accessed
+2024-10-22 18:47:42 [info]: GET / login accessed
+2024-10-22 18:47:45 [info]: Index logging
+2024-10-22 18:47:45 [info]: Name: 
+2024-10-22 18:48:18 [info]: Index logging
+2024-10-22 18:48:18 [info]: Name: 
+2024-10-22 18:48:20 [info]: Index logging
+2024-10-22 18:48:20 [info]: Name: 
+2024-10-22 18:48:26 [info]: Server running at http://localhost:8080/
+2024-10-22 18:48:26 [info]: Connected to the SQLite database.
+2024-10-22 18:48:28 [info]: Index logging - Name: 
+2024-10-22 18:49:10 [info]: Server running at http://localhost:8080/
+2024-10-22 18:49:10 [info]: Connected to the SQLite database.
+2024-10-22 18:49:24 [info]: Server running at http://localhost:8080/
+2024-10-22 18:49:24 [info]: Connected to the SQLite database.
+2024-10-22 18:49:26 [info]: Index logging - Name: 
+2024-10-22 18:49:31 [info]: Server running at http://localhost:8080/
+2024-10-22 18:49:31 [info]: Connected to the SQLite database.
+2024-10-22 18:49:33 [info]: Index logging - Name: 
+2024-10-22 18:50:04 [info]: Server running at http://localhost:8080/
+2024-10-22 18:50:04 [info]: Connected to the SQLite database.
+2024-10-22 18:50:26 [info]: Server running at http://localhost:8080/
+2024-10-22 18:50:26 [info]: Connected to the SQLite database.
+2024-10-22 18:50:27 [info]: Index logging - Name: 
+2024-10-22 18:50:30 [info]: Index logging - Name: 
+2024-10-22 18:50:56 [info]: Server running at http://localhost:8080/
+2024-10-22 18:50:56 [info]: Connected to the SQLite database.
+2024-10-22 18:51:04 [info]: Index logging - Name: Guest
+2024-10-22 18:51:44 [info]: Server running at http://localhost:8080/
+2024-10-22 18:51:44 [info]: Connected to the SQLite database.
+2024-10-22 18:52:22 [info]: Server running at http://localhost:8080/
+2024-10-22 18:52:22 [info]: Connected to the SQLite database.
+2024-10-22 18:52:25 [info]: Index logging - Name: 
+2024-10-22 18:52:31 [info]: Index logging - Name: 
+2024-10-22 18:52:33 [info]: Index logging - Name: 
+2024-10-22 18:52:40 [info]: Server running at http://localhost:8080/
+2024-10-22 18:52:40 [info]: Connected to the SQLite database.
+2024-10-22 18:52:41 [info]: Index logging - Name: 
+2024-10-22 18:52:50 [info]: Server running at http://localhost:8080/
+2024-10-22 18:52:50 [info]: Connected to the SQLite database.
+2024-10-22 18:52:52 [info]: Index logging - Name: Guest
+2024-10-22 18:52:58 [info]: GET / login accessed
+2024-10-22 18:53:03 [info]: POST / accepted - Name : Arni
+2024-10-22 18:53:03 [info]: Index logging - Name: Guest
+2024-10-22 18:53:07 [info]: Index logging - Name: Guest
+2024-10-22 18:53:08 [info]: Index logging - Name: Guest
+2024-10-22 18:53:09 [info]: Head Teacher - Dashboard - Name: Arni
+2024-10-22 18:53:11 [info]: Index logging - Name: Guest
