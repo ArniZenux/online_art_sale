@@ -1,0 +1,47 @@
+2024-10-27 10:29:31 [info]: Server running at http://localhost:8080/
+2024-10-27 10:29:31 [info]: Connected to the SQLite database.
+2024-10-27 10:29:47 [info]: Server running at http://localhost:8080/
+2024-10-27 10:29:47 [info]: Connected to the SQLite database.
+2024-10-27 10:30:34 [info]: GET / login accessed
+2024-10-27 10:31:53 [info]: GET / login accessed
+2024-10-27 10:32:02 [info]: POST / accepted - Name : Arni
+2024-10-27 10:32:09 [info]: Head Teacher - Dashboard - Name: Arni
+2024-10-27 10:32:13 [info]: Head Teacher - Dashboard - Name: Arni
+2024-10-27 10:32:14 [info]: GET / Register accessed
+2024-10-27 10:32:15 [info]: Head Teacher - Dashboard - Name: Arni
+2024-10-27 10:32:41 [info]: GET / Register accessed
+2024-10-27 10:33:10 [info]: GET / login accessed
+2024-10-27 10:33:18 [info]: POST / accepted - Name : anna
+2024-10-27 10:33:24 [info]: Teacher - Dashboard - Name: anna
+2024-10-27 10:33:51 [info]: GET / login accessed
+2024-10-27 10:33:58 [info]: POST / accepted - Name : robert
+2024-10-27 10:34:00 [info]: Student - Dashboard - Name: robert
+2024-10-27 10:36:30 [info]: Server running at http://localhost:8080/
+2024-10-27 10:36:30 [info]: Connected to the SQLite database.
+2024-10-27 11:30:40 [info]: GET / login accessed
+2024-10-27 11:30:43 [warn]: POST / login rejected
+2024-10-27 11:30:43 [info]: GET / login accessed
+2024-10-27 11:30:46 [info]: GET / login accessed
+2024-10-27 11:30:52 [info]: POST / accepted - Name : Arni
+2024-10-27 11:30:54 [info]: GET / Register accessed
+2024-10-27 11:31:19 [info]: GET / Register accessed
+2024-10-27 11:31:26 [info]: GET / login accessed
+2024-10-27 11:31:36 [info]: POST / accepted - Name : robert
+2024-10-27 18:17:23 [info]: Server running at http://localhost:8080/
+2024-10-27 18:17:23 [info]: Connected to the SQLite database.
+2024-10-27 18:18:20 [info]: GET / login accessed
+2024-10-27 18:18:27 [info]: POST / accepted - Name : Arni
+2024-10-27 18:18:29 [info]: Head Teacher - Dashboard - Name: Arni
+2024-10-27 18:18:35 [info]: GET / Register accessed
+2024-10-27 18:18:54 [info]: GET / Register accessed
+2024-10-27 18:19:00 [info]: GET / login accessed
+2024-10-27 18:19:08 [warn]: POST / login rejected
+2024-10-27 18:19:08 [info]: GET / login accessed
+2024-10-27 18:19:14 [warn]: POST / login rejected
+2024-10-27 18:19:14 [info]: GET / login accessed
+2024-10-27 18:19:24 [info]: POST / accepted - Name : anna
+2024-10-27 18:19:26 [info]: Teacher - Dashboard - Name: anna
+2024-10-27 18:19:33 [info]: GET / login accessed
+2024-10-27 18:19:43 [info]: POST / accepted - Name : robert
+2024-10-27 18:19:46 [info]: Student - Dashboard - Name: robert
+2024-10-27 18:19:53 [info]: GET / login accessed

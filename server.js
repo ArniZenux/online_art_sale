@@ -94,7 +94,7 @@ app.get('/headteacher', (req, res) => {
 });
 
 /* 
-  Teacher
+  Teacher page
 */
 app.get('/teacher', (req, res) => {
   logger.info(`Teacher - Dashboard - Name: ${name}`);
@@ -102,7 +102,7 @@ app.get('/teacher', (req, res) => {
 });
 
 /* 
-  Student
+  Student page
 */
 app.get('/student', (req, res) => {
   logger.info(`Student - Dashboard - Name: ${name}`);
@@ -110,7 +110,7 @@ app.get('/student', (req, res) => {
 });
 
 /* 
-  Guest
+  Guest page 
 */
 app.get('/guest', (req, res) => {
   res.render('guest', {user: req.session.user, usertype: req.session.usertype});
