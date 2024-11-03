@@ -1,0 +1,121 @@
+2024-11-01 14:07:10 [info]: Server running at http://localhost:8080/
+2024-11-01 14:07:10 [info]: Connected to the SQLite database.
+2024-11-01 14:07:20 [info]: GET / login accessed
+2024-11-01 14:07:23 [info]: POST / accepted - Name : Arni
+2024-11-01 14:07:27 [info]: GET / login accessed
+2024-11-01 14:07:31 [warn]: POST / login rejected
+2024-11-01 14:07:31 [info]: GET / login accessed
+2024-11-01 14:07:36 [warn]: POST / login rejected
+2024-11-01 14:07:36 [info]: GET / login accessed
+2024-11-01 14:07:49 [info]: POST / accepted - Name : robert
+2024-11-01 14:07:51 [info]: Student - Dashboard - Name: robert
+2024-11-01 14:07:56 [info]: GET / login accessed
+2024-11-01 14:08:02 [warn]: POST / login rejected
+2024-11-01 14:08:02 [info]: GET / login accessed
+2024-11-01 14:08:12 [info]: GET / Register accessed
+2024-11-01 14:08:38 [info]: GET / login accessed
+2024-11-01 14:08:43 [info]: POST / accepted - Name : Arni
+2024-11-01 14:08:45 [info]: Head Teacher - Dashboard - Name: Arni
+2024-11-01 14:08:46 [info]: GET / Register accessed
+2024-11-01 14:09:04 [info]: GET / Register accessed
+2024-11-01 14:10:18 [info]: GET / login accessed
+2024-11-01 14:10:19 [info]: GET / login accessed
+2024-11-01 14:16:18 [info]: GET / login accessed
+2024-11-01 14:16:22 [info]: GET / login accessed
+2024-11-01 14:16:23 [info]: GET / login accessed
+2024-11-01 14:17:47 [info]: GET / Register accessed
+2024-11-01 14:17:56 [info]: GET / login accessed
+2024-11-01 14:22:04 [info]: GET / login accessed
+2024-11-01 14:26:42 [info]: GET / login accessed
+2024-11-01 14:28:58 [info]: GET / login accessed
+2024-11-01 14:29:08 [info]: GET / login accessed
+2024-11-01 14:29:23 [info]: GET / login accessed
+2024-11-01 14:29:29 [info]: GET / login accessed
+2024-11-01 14:30:42 [info]: GET / login accessed
+2024-11-01 14:30:42 [info]: GET / login accessed
+2024-11-01 14:30:42 [info]: GET / Register accessed
+2024-11-01 14:30:42 [info]: Student - Dashboard - Name: Arni
+2024-11-01 14:30:58 [info]: GET / login accessed
+2024-11-01 14:31:07 [info]: GET / login accessed
+2024-11-01 14:31:07 [info]: GET / login accessed
+2024-11-01 14:31:07 [info]: GET / Register accessed
+2024-11-01 14:31:07 [info]: Student - Dashboard - Name: Arni
+2024-11-01 14:31:46 [info]: Student - Dashboard - Name: Arni
+2024-11-01 14:39:19 [info]: GET / login accessed
+2024-11-01 14:39:22 [info]: POST / accepted - Name : Arni
+2024-11-01 14:39:23 [info]: Head Teacher - Dashboard - Name: Arni
+2024-11-01 14:39:24 [info]: GET / Register accessed
+2024-11-01 14:39:28 [info]: Head Teacher - Dashboard - Name: Arni
+2024-11-01 14:39:28 [info]: GET / Register accessed
+2024-11-01 14:55:30 [info]: GET / login accessed
+2024-11-01 14:55:33 [info]: GET / login accessed
+2024-11-01 14:55:48 [info]: GET / login accessed
+2024-11-01 14:56:10 [info]: GET / login accessed
+2024-11-01 15:02:44 [info]: GET / login accessed
+2024-11-01 15:02:48 [info]: GET / login accessed
+2024-11-01 15:03:05 [info]: GET / login accessed
+2024-11-01 15:08:04 [info]: GET / login accessed
+2024-11-01 15:08:04 [info]: GET / login accessed
+2024-11-01 15:08:04 [info]: GET / login accessed
+2024-11-01 15:08:04 [info]: GET / login accessed
+2024-11-01 15:08:04 [info]: GET / login accessed
+2024-11-01 15:08:04 [info]: GET / login accessed
+2024-11-01 15:08:04 [info]: GET / login accessed
+2024-11-01 15:08:04 [info]: GET / login accessed
+2024-11-01 15:08:17 [info]: GET / login accessed
+2024-11-01 15:08:17 [info]: GET / login accessed
+2024-11-01 15:08:17 [info]: GET / login accessed
+2024-11-01 15:08:17 [info]: GET / login accessed
+2024-11-01 15:08:17 [info]: GET / login accessed
+2024-11-01 15:08:17 [info]: GET / login accessed
+2024-11-01 15:08:17 [info]: GET / login accessed
+2024-11-01 15:08:17 [info]: GET / login accessed
+2024-11-01 15:08:18 [info]: GET / login accessed
+2024-11-01 15:08:18 [info]: GET / login accessed
+2024-11-01 15:08:18 [info]: GET / login accessed
+2024-11-01 15:08:18 [info]: GET / login accessed
+2024-11-01 15:08:18 [info]: GET / login accessed
+2024-11-01 15:08:18 [info]: GET / login accessed
+2024-11-01 15:08:18 [info]: GET / login accessed
+2024-11-01 15:08:18 [info]: GET / login accessed
+2024-11-01 15:08:18 [info]: GET / login accessed
+2024-11-01 15:08:18 [info]: GET / login accessed
+2024-11-01 15:08:18 [info]: GET / login accessed
+2024-11-01 15:08:18 [info]: GET / login accessed
+2024-11-01 15:08:18 [info]: GET / login accessed
+2024-11-01 15:08:18 [info]: GET / login accessed
+2024-11-01 15:08:18 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:19 [info]: GET / login accessed
+2024-11-01 15:08:20 [info]: GET / login accessed
+2024-11-01 15:08:20 [info]: GET / login accessed
+2024-11-01 15:08:20 [info]: GET / login accessed
+2024-11-01 15:08:20 [info]: GET / login accessed
+2024-11-01 15:08:20 [info]: GET / login accessed
+2024-11-01 15:08:20 [info]: GET / login accessed
+2024-11-01 15:08:20 [info]: GET / login accessed
+2024-11-01 15:08:20 [info]: GET / login accessed
+2024-11-01 15:08:20 [info]: GET / login accessed
+2024-11-01 15:08:20 [info]: GET / login accessed
+2024-11-01 15:08:20 [info]: GET / login accessed
+2024-11-01 15:08:20 [info]: GET / login accessed
+2024-11-01 15:08:20 [info]: GET / login accessed
+2024-11-01 15:08:20 [info]: GET / login accessed
+2024-11-01 15:19:03 [info]: GET / login accessed

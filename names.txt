@@ -1,0 +1,11 @@
+login
+admin 
+Admin
+ADMIN
+guest
+Login
+logout
+register
+student
+headteacher
+registeradmin

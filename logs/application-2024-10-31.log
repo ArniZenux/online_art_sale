@@ -1,0 +1,5 @@
+2024-10-31 19:11:27 [info]: Server running at http://localhost:8080/
+2024-10-31 19:11:27 [info]: Connected to the SQLite database.
+2024-10-31 19:11:42 [info]: GET / login accessed
+2024-10-31 19:11:47 [info]: POST / accepted - Name : Arni
+2024-10-31 19:11:52 [info]: GET / Register accessed

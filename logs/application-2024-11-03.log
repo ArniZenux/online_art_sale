@@ -1,0 +1,43 @@
+2024-11-03 13:03:19 [info]: Server running at http://localhost:8080/
+2024-11-03 13:03:19 [info]: Connected to the SQLite database.
+2024-11-03 13:03:39 [info]: GET / login accessed
+2024-11-03 13:03:43 [info]: POST / accepted - Name : Arni
+2024-11-03 13:09:48 [info]: GET / login accessed
+2024-11-03 13:09:48 [info]: GET / login accessed
+2024-11-03 13:09:48 [info]: GET / Register accessed
+2024-11-03 13:09:48 [info]: Student - Dashboard - Name: Arni
+2024-11-03 13:12:28 [info]: Head Teacher - Dashboard - Name: Arni
+2024-11-03 13:12:38 [info]: GET / Register accessed
+2024-11-03 13:12:40 [info]: GET / login accessed
+2024-11-03 13:12:44 [info]: POST / accepted - Name : Arni
+2024-11-03 13:12:46 [info]: GET / Register accessed
+2024-11-03 13:12:48 [info]: Head Teacher - Dashboard - Name: Arni
+2024-11-03 13:12:49 [info]: GET / Register accessed
+2024-11-03 13:12:57 [info]: Head Teacher - Dashboard - Name: Arni
+2024-11-03 13:39:03 [info]: GET / login accessed
+2024-11-03 14:19:13 [info]: GET / login accessed
+2024-11-03 14:19:35 [info]: GET / Register accessed
+2024-11-03 14:19:47 [info]: GET / Register accessed
+2024-11-03 14:20:24 [info]: GET / login accessed
+2024-11-03 14:20:28 [info]: GET / login accessed
+2024-11-03 14:22:46 [info]: GET / Register accessed
+2024-11-03 14:31:16 [info]: GET / login accessed
+2024-11-03 14:31:33 [info]: GET / Register accessed
+2024-11-03 14:31:42 [info]: GET / login accessed
+2024-11-03 14:32:58 [info]: GET / login accessed
+2024-11-03 14:33:05 [info]: GET / login accessed
+2024-11-03 14:39:00 [info]: GET / Register accessed
+2024-11-03 14:39:00 [info]: GET / login accessed
+2024-11-03 14:39:09 [info]: GET / Register accessed
+2024-11-03 14:39:09 [info]: GET / login accessed
+2024-11-03 14:39:23 [info]: GET / login accessed
+2024-11-03 14:39:27 [info]: GET / login accessed
+2024-11-03 14:39:27 [info]: GET / Register accessed
+2024-11-03 14:39:33 [info]: GET / Register accessed
+2024-11-03 14:39:33 [info]: GET / login accessed
+2024-11-03 14:39:55 [info]: GET / Register accessed
+2024-11-03 14:39:59 [info]: GET / login accessed
+2024-11-03 14:40:04 [info]: POST / accepted - Name : Arni
+2024-11-03 14:40:05 [info]: GET / Register accessed
+2024-11-03 14:40:06 [info]: Head Teacher - Dashboard - Name: Arni
+2024-11-03 14:40:09 [info]: GET / Register accessed
