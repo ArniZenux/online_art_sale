@@ -2,6 +2,8 @@ import express from 'express';
 import sqlite3 from 'sqlite3';
 import cors from 'cors';
 
+import https from 'https';
+import http from 'http';
 
 // CSRF ///
 import cookieParser from 'cookie-parser';
@@ -10,7 +12,12 @@ import csurf from 'csurf';
 ///////////////////////////////////////////////
 
 import session from 'express-session';
+
+
 import bcrypt from 'bcrypt'; 
+import crypto from 'crypto';
+
+
 import * as fs from 'fs';
 import dotenv from 'dotenv';   // session fixation 
 import passwordSchema from 'password-validator';
@@ -27,6 +34,7 @@ dotenv.config();
 
 const {
   PORT: port,
+  PORT_secure: secure_port, 
 } = process.env;
 
 const app = express();
@@ -53,10 +61,10 @@ app.use(bodyParse.json());
 app.use(cookieParser()); // To parse cookies
 
 // CSRF protection middleware
-const csrfProtection = csurf({ cookie: {secure: true } });
-app.use(csrfProtection);
+//const csrfProtection = csurf({ cookie: {secure: true } });
+//app.use(csrfProtection);
 
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
   if(!req.session.usertype){
     req.session.usertype = 'Guest';
   }
@@ -64,6 +72,7 @@ app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken();
   next();
 });
+*/
 
 let db = new sqlite3.Database(dbFile2, (err) => {
   if (err) {
@@ -139,7 +148,8 @@ app.get('/admin', (req, res) => {
 app.get('/login',  (req, res) =>  {
   logger.info('GET / login accessed');  // Info level logging
   const message = '';  // Error message (brute-force, weak password )
-  res.render('login', {csrfToken: req.csrfToken(), user: req.session.user, error_msg : message, usertype: req.session.usertype}); 
+  res.render('login', {user: req.session.user, error_msg : message, usertype: req.session.usertype}); 
+  //res.render('login', {csrfToken: req.csrfToken(), user: req.session.user, error_msg : message, usertype: req.session.usertype}); 
 });
 
 /*
@@ -208,6 +218,37 @@ app.post('/login', loginLimier,  async (req, res) => {
   }
 });
 
+
+// Function to hash a password using PBKDF2
+async function hashPassword_pdkdf2(password) {
+  const salt = crypto.randomBytes(16).toString('hex'); // Generate a random 16-byte salt
+  const iterations = 100000; // Increase this number to slow down the hashing process (100,000+ recommended)
+  const keyLength = 64; // Length of the resulting key
+  const digest = 'sha256'; // Use a secure hash function, like SHA-256
+
+  return new Promise((resolve, reject) => {
+      crypto.pbkdf2(password, salt, iterations, keyLength, digest, (err, derivedKey) => {
+          if (err) reject(err);
+          resolve(`${salt}:${derivedKey.toString('hex')}`);
+      });
+  });
+}
+
+// Function to verify a password
+async function verifyPassword(password, hashedPassword) {
+  const [salt, key] = hashedPassword.split(':');
+  const iterations = 100000; // Use the same iterations as in the hashing function
+  const keyLength = 64;
+  const digest = 'sha256';
+
+  return new Promise((resolve, reject) => {
+      crypto.pbkdf2(password, salt, iterations, keyLength, digest, (err, derivedKey) => {
+          if (err) reject(err);
+          resolve(key === derivedKey.toString('hex'));
+      });
+  });
+}
+
 /*
   Register POST - Server.js 
 */
@@ -228,13 +269,21 @@ app.post('/register', async (req, res) => {
     logger.warn(`POST / registier - password weaks!!`);  // Info level logging
     res.render('register', {user: req.session.user, error_msg : message, usertype: req.session.usertype});
   } else {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    
+    const saltRounds = 10; 
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const pbkdf2_hashedPassword = await hashPassword_pdkdf2(password);
+
     z_user.push( {username, password: hashedPassword, usertype: 'student'} );
     ad_safna_ollum_append('New User registerd');
+    
+    console.log('Assignment 10');
     console.log('Notandi: ', username);
     console.log('Password: ', password); 
-    console.log('Hashed password: ', hashedPassword); 
+    console.log('Hash with salt ', hashedPassword);
+    console.log('Pbkdf2 hash password: ', pbkdf2_hashedPassword);
     console.log('User registered successfully');
+
     logger.info(`POST / registier accepted - New student add : ${username}`);  // Info level logging
     res.redirect('/',);    
   }
@@ -282,7 +331,26 @@ app.use((err, req, res, next) => {
   }
 });
 
-app.listen(port, () => {
+const options = {
+  key: fs.readFileSync('./keys/server.key'),  // Path to private key
+  cert: fs.readFileSync('./certs/server.cert') // Path to certificate
+};
+
+
+/*app.listen(port, () => {
   //console.log(`Server running at http://localhost:${port}/`);
-  logger.info(`Server running at http://localhost:${port}/`);  // Info level logging
+  logger.info(`No secure - Server running at http://localhost:${port}/`);  // Info level logging
+});*/
+
+https.createServer(options, app).listen(port, () => {
+  logger.info(`Secure HTTP - Server running at http(s)://localhost:${port}/`);  // Info level logging
 });
+
+/*
+http.createServer((req, res) => {
+  res.writeHead(301, { "Location": "https://" + req.headers.host + req.url });
+  res.end(); 
+}).listen(port, ()=> {
+  logger.info(`Secure - Server running at http(s)://localhost:${port}/`);  // Info level logging
+});
+*/
